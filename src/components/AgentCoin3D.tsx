@@ -9,7 +9,16 @@ interface AgentCoin3DProps {
 }
 
 const COIN_PALETTES = [
-  { color: "#c8cdd2", metalness: 0.98, roughness: 0.03 },
+  { color: "#F7931A", metalness: 0.95, roughness: 0.05 },  // gold/bitcoin
+  { color: "#627EEA", metalness: 0.95, roughness: 0.05 },  // blue/ethereum
+  { color: "#E84142", metalness: 0.95, roughness: 0.05 },  // red
+  { color: "#00D4AA", metalness: 0.95, roughness: 0.05 },  // teal
+  { color: "#8247E5", metalness: 0.95, roughness: 0.05 },  // purple
+  { color: "#F3BA2F", metalness: 0.95, roughness: 0.05 },  // yellow/bnb
+  { color: "#2775CA", metalness: 0.95, roughness: 0.05 },  // ocean blue
+  { color: "#FF007A", metalness: 0.95, roughness: 0.05 },  // pink
+  { color: "#00ADEF", metalness: 0.95, roughness: 0.05 },  // sky blue
+  { color: "#c8cdd2", metalness: 0.98, roughness: 0.03 },  // silver
 ];
 
 // Pre-create material instances to avoid GC pressure
