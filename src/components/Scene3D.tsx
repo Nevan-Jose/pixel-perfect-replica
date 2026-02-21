@@ -253,6 +253,12 @@ const Scene3D = memo(() => {
     let flyoutStartTime = 0;
     let exitAngles: number[] = [];
 
+    // --- Turbo spin + fade state ---
+    let turboActive = false;
+    let fadeActive = false;
+    let fadeStartTime = 0;
+    const FADE_DURATION = 0.8;
+
     const setAllMaterialsTransparent = (coin: THREE.Group, transparent: boolean, opacity = 1) => {
       coin.traverse((child) => {
         if ((child as THREE.Mesh).isMesh) {
@@ -271,6 +277,8 @@ const Scene3D = memo(() => {
 
     const resetToRing = () => {
       flyoutActive = false;
+      turboActive = false;
+      fadeActive = false;
       targetSpeed = 1;
       speedMultiplier = 1;
       scrollBoost = 0;
@@ -307,16 +315,26 @@ const Scene3D = memo(() => {
     };
     const onHoverResume = () => {
       hoverActive = false;
-      if (!flyoutActive) targetSpeed = 1;
+      if (!flyoutActive && !turboActive) targetSpeed = 1;
+    };
+    const onTurboSpin = () => {
+      turboActive = true;
+      hoverActive = false;
+      targetSpeed = 20;
+    };
+    const onFadeOut = () => {
+      fadeActive = true;
+      fadeStartTime = clock.getElapsedTime();
+      allCoins.forEach((c) => setAllMaterialsTransparent(c.mesh, true));
     };
     const onScrollIntensity = (event: Event) => {
-      if (flyoutActive || hoverActive) return;
+      if (flyoutActive || hoverActive || turboActive) return;
       const detail = (event as CustomEvent<{ intensity?: number }>).detail;
       const intensity = Math.max(0, Math.min(1, Number(detail?.intensity ?? 0)));
       scrollBoostTarget = Math.max(scrollBoostTarget, intensity * 4.2);
     };
     const onScroll = () => {
-      if (flyoutActive || hoverActive) return;
+      if (flyoutActive || hoverActive || turboActive) return;
       scrollBoostTarget = Math.max(scrollBoostTarget, 2.2);
     };
 
@@ -325,6 +343,8 @@ const Scene3D = memo(() => {
     window.addEventListener("scene-speed-boost", onSpeedBoost);
     window.addEventListener("scene-hover-pause", onHoverPause);
     window.addEventListener("scene-hover-resume", onHoverResume);
+    window.addEventListener("scene-turbo-spin", onTurboSpin);
+    window.addEventListener("scene-fade-out", onFadeOut);
     window.addEventListener("scene-scroll-intensity", onScrollIntensity as EventListener);
     window.addEventListener("scroll", onScroll, { passive: true });
 
@@ -332,10 +352,8 @@ const Scene3D = memo(() => {
       animId = requestAnimationFrame(animate);
       const t = clock.getElapsedTime();
 
-      // Spin coins still in the ring
-
-      // Spin coins still in the ring
-      if (!flyoutActive && !hoverActive) {
+      // Spin coins
+      if (!flyoutActive && !hoverActive && !turboActive) {
         scrollBoost += (scrollBoostTarget - scrollBoost) * 0.12;
         scrollBoostTarget *= 0.9;
       } else {
@@ -344,11 +362,13 @@ const Scene3D = memo(() => {
 
       const effectiveTargetSpeed = hoverActive
         ? 0
-        : flyoutActive
-          ? targetSpeed
-          : targetSpeed + scrollBoost;
+        : turboActive
+          ? 20
+          : flyoutActive
+            ? targetSpeed
+            : targetSpeed + scrollBoost;
 
-      speedMultiplier += (effectiveTargetSpeed - speedMultiplier) * (flyoutActive ? 0.08 : 0.06);
+      speedMultiplier += (effectiveTargetSpeed - speedMultiplier) * (turboActive ? 0.15 : flyoutActive ? 0.08 : 0.06);
       for (let i = 0; i < allCoins.length; i++) {
         const coinObj = allCoins[i];
         if (coinObj.mesh.parent === ringGroup) {
@@ -401,6 +421,21 @@ const Scene3D = memo(() => {
         camera.lookAt(200, 0, 0);
       }
 
+      // Fade out all coins when scene-fade-out fires
+      if (fadeActive) {
+        const fadeElapsed = t - fadeStartTime;
+        const fadeProgress = Math.min(fadeElapsed / FADE_DURATION, 1);
+        const easedFade = easeOutCubic(fadeProgress);
+        for (let i = 0; i < allCoins.length; i++) {
+          setAllMaterialsTransparent(allCoins[i].mesh, true, 1 - easedFade);
+        }
+        if (fadeProgress >= 1) {
+          fadeActive = false;
+          turboActive = false;
+          ringGroup.visible = false;
+        }
+      }
+
       pt1.position.x = 300 + Math.sin(t * 0.3) * 150;
       pt1.position.y = 400 + Math.cos(t * 0.25) * 100;
 
@@ -427,6 +462,8 @@ const Scene3D = memo(() => {
       window.removeEventListener("scene-speed-boost", onSpeedBoost);
       window.removeEventListener("scene-hover-pause", onHoverPause);
       window.removeEventListener("scene-hover-resume", onHoverResume);
+      window.removeEventListener("scene-turbo-spin", onTurboSpin);
+      window.removeEventListener("scene-fade-out", onFadeOut);
       window.removeEventListener("scene-scroll-intensity", onScrollIntensity as EventListener);
       window.removeEventListener("scroll", onScroll);
       renderer.dispose();
