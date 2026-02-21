@@ -336,7 +336,7 @@ export default function CreateAgent() {
                         className={`text-left p-3 rounded-lg border transition-all text-[0.75rem] leading-relaxed ${
                           strategy === s
                             ? "border-xade-green bg-[hsl(var(--chip-bg))] text-[hsl(var(--foreground))]"
-                            : "border-[hsl(var(--card-border))] text-[hsl(var(--muted-foreground))] hover:border-[hsl(var(--card-border-hover))] hover:text-[hsl(var(--foreground))]"
+                            : "border-[hsl(var(--card-border))] bg-[hsl(var(--chip-bg))]/50 text-[hsl(var(--foreground))]/75 hover:border-[hsl(var(--card-border-hover))] hover:text-[hsl(var(--foreground))]"
                         }`}
                       >
                         {s}
