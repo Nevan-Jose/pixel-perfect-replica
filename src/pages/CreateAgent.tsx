@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { saveAgent, type Agent } from "@/lib/mockAgents";
@@ -113,6 +113,13 @@ function AgentPreview({ strategy, name, selectedMarkets, listPublic, step }: {
 
 /* ── Main page ── */
 export default function CreateAgent() {
+  useEffect(() => {
+    document.body.classList.remove("landing-page");
+    document.documentElement.classList.add("marketplace-dark");
+    return () => {
+      document.documentElement.classList.remove("marketplace-dark");
+    };
+  }, []);
   const navigate = useNavigate();
   const [step, setStep] = useState(0);
   const [strategy, setStrategy] = useState("");
