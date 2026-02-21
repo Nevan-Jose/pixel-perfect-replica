@@ -1,18 +1,41 @@
-import { memo, useState } from "react";
-import { Link } from "react-router-dom";
+import { memo, useState, useCallback } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 const Hero = memo(() => {
   const [expanding, setExpanding] = useState(false);
   const [hovered, setHovered] = useState(false);
+  const [fadingOut, setFadingOut] = useState(false);
+  const navigate = useNavigate();
 
-  const handleClick = (e: React.MouseEvent) => {
+  const handleClick = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
+    if (expanding) return;
     setExpanding(true);
-    window.dispatchEvent(new CustomEvent("hero-cta-click"));
-  };
+
+    // 1. Green circle expands over button
+    // 2. Coins spin 20x faster
+    window.dispatchEvent(new CustomEvent("scene-turbo-spin"));
+
+    // 3. After green fills button, fade everything out
+    setTimeout(() => {
+      setFadingOut(true);
+      window.dispatchEvent(new CustomEvent("scene-fade-out"));
+    }, 500);
+
+    // 4. Navigate after fade completes
+    setTimeout(() => {
+      navigate("/marketplace");
+    }, 1400);
+  }, [expanding, navigate]);
 
   return (
-    <div className="fixed bottom-[33vh] left-[2.5rem] z-[5] max-w-[480px]">
+    <div
+      className="fixed bottom-[33vh] left-[2.5rem] z-[5] max-w-[480px]"
+      style={{
+        opacity: fadingOut ? 0 : 1,
+        transition: fadingOut ? "opacity 600ms ease-out" : "none",
+      }}
+    >
       <h1
         className="text-[hsl(var(--hero-title))] tracking-[0.06em] leading-[1.1] animate-fade-up-delay-1"
         style={{
@@ -41,7 +64,11 @@ const Hero = memo(() => {
             }
           }}
           className="relative inline-flex items-center gap-2.5 px-[1.8rem] py-[0.7rem] bg-[hsl(var(--foreground))] text-[hsl(var(--background))] text-[0.7rem] tracking-[0.18em] uppercase no-underline cursor-pointer rounded-full hover:shadow-[0_0_24px_6px_rgba(0,0,0,0.35)] overflow-hidden"
-          style={{ fontFamily: "var(--font-body)", transition: "box-shadow 0.3s, transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)", transform: hovered && !expanding ? "scale(1.06)" : "scale(1)" }}
+          style={{
+            fontFamily: "var(--font-body)",
+            transition: "box-shadow 0.3s, transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+            transform: hovered && !expanding ? "scale(1.06)" : "scale(1)",
+          }}
         >
           {/* Green expanding circle */}
           <span
