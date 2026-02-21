@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 
 import Navbar from "@/components/Navbar";
+import Hero from "@/components/Hero";
 import FeatureCards from "@/components/home/FeatureCards";
 import HomeStory, { type StoryAnchorItem } from "@/components/home/HomeStory";
 import StorySection from "@/components/home/StorySection";
@@ -105,6 +106,7 @@ export default function Index() {
       className="relative min-h-screen"
     >
       <Navbar />
+      <Hero />
 
       <HomeStory anchors={ANCHORS} activeAnchor={activeSection}>
         <section id="features" data-story-section className="min-h-[60vh] pt-[100vh]">
