@@ -169,7 +169,7 @@ export default function Marketplace() {
               placeholder="Search agents..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-9 pr-4 py-2.5 text-sm bg-[hsl(var(--chip-bg))] border border-[hsl(var(--card-border))] rounded-lg text-[hsl(var(--foreground))] placeholder:text-[hsl(var(--muted-foreground))] focus:outline-none focus:border-[hsl(var(--card-border-hover))]"
+              className="w-full pl-9 pr-4 py-2.5 text-sm bg-[hsl(var(--chip-bg))] border border-[hsl(var(--card-border))] rounded-full text-[hsl(var(--foreground))] placeholder:text-[hsl(var(--muted-foreground))] focus:outline-none focus:border-[hsl(var(--card-border-hover))]"
             />
           </div>
           <div className="flex items-center gap-2">
