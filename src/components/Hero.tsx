@@ -60,12 +60,14 @@ const Hero = memo(() => {
           />
           {/* Green dot */}
           <span
-            className="relative z-[1] w-[7px] h-[7px] rounded-full flex-shrink-0"
+            className="relative z-[1] rounded-full flex-shrink-0"
             style={{
+              width: hovered && !expanding ? "10px" : "0px",
+              height: hovered && !expanding ? "10px" : "0px",
+              minWidth: hovered && !expanding ? "10px" : "0px",
               backgroundColor: "hsl(145 63% 49%)",
-              transition: "opacity 200ms ease, transform 200ms ease",
-              opacity: expanding ? 0 : hovered ? 1 : 0,
-              transform: hovered && !expanding ? "scale(1)" : "scale(0)",
+              boxShadow: hovered && !expanding ? "0 0 8px 2px hsla(145, 63%, 49%, 0.5)" : "none",
+              transition: "width 300ms cubic-bezier(0.34, 1.56, 0.64, 1), height 300ms cubic-bezier(0.34, 1.56, 0.64, 1), min-width 300ms cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 300ms ease",
             }}
           />
           <span className="relative z-[1]">Explore Marketplace</span>
