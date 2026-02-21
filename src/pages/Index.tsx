@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 
 import Navbar from "@/components/Navbar";
@@ -8,16 +7,10 @@ import FeatureCards from "@/components/home/FeatureCards";
 import HomeStory, { type StoryAnchorItem } from "@/components/home/HomeStory";
 import StorySection from "@/components/home/StorySection";
 import NewsPanel from "@/components/home/NewsPanel";
-import OkxStatsPanel from "@/components/home/OkxStatsPanel";
-import StrategyPanel from "@/components/home/StrategyPanel";
-import TradeLogsPanel from "@/components/home/TradeLogsPanel";
 
 const ANCHORS: StoryAnchorItem[] = [
   { id: "features", label: "Features" },
   { id: "news", label: "News" },
-  { id: "okx", label: "OKX" },
-  { id: "strategy", label: "Strategy" },
-  { id: "logs", label: "Logs" },
 ];
 
 const MAX_VELOCITY = 1.8;
@@ -120,35 +113,6 @@ export default function Index() {
           description="Ingest the latest market-moving stories so traders and agents can react faster to macro and token-specific catalysts."
         >
           <NewsPanel />
-        </StorySection>
-
-        <StorySection
-          id="okx"
-          eyebrow="02 / Exchange Pulse"
-          title="OKX Market Statistics"
-          description="Stream key OKX spot data points to understand trend strength, volatility shifts, and intraday leader rotation before entering positions."
-          align="right"
-        >
-          <OkxStatsPanel />
-        </StorySection>
-
-        <StorySection
-          id="strategy"
-          eyebrow="03 / Agent Studio"
-          title="Agent Creation & Smart Strategy"
-          description="Transform natural-language strategy ideas into automated agents with structured signal, risk, and execution layers."
-        >
-          <StrategyPanel />
-        </StorySection>
-
-        <StorySection
-          id="logs"
-          eyebrow="04 / Execution Intelligence"
-          title="Trade Logs & User Statistics"
-          description="Record each order event and aggregate PnL, win rate, and behavior metrics so users can continuously improve their trading systems."
-          align="right"
-        >
-          <TradeLogsPanel />
         </StorySection>
       </HomeStory>
     </motion.div>
