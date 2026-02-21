@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 
 import Navbar from "@/components/Navbar";
+import FeatureCards from "@/components/home/FeatureCards";
 import HomeStory, { type StoryAnchorItem } from "@/components/home/HomeStory";
 import StorySection from "@/components/home/StorySection";
 import NewsPanel from "@/components/home/NewsPanel";
@@ -11,7 +12,7 @@ import StrategyPanel from "@/components/home/StrategyPanel";
 import TradeLogsPanel from "@/components/home/TradeLogsPanel";
 
 const ANCHORS: StoryAnchorItem[] = [
-  { id: "overview", label: "Overview" },
+  { id: "features", label: "Features" },
   { id: "news", label: "News" },
   { id: "okx", label: "OKX" },
   { id: "strategy", label: "Strategy" },
@@ -106,55 +107,9 @@ export default function Index() {
       <Navbar />
 
       <HomeStory anchors={ANCHORS} activeAnchor={activeSection}>
-        <StorySection
-          id="overview"
-          eyebrow="Global Trading Layer"
-          title="Crypto Intelligence That Moves With The Market"
-          description="Track real-time crypto headlines, monitor OKX market flow, design autonomous strategy agents, and audit every execution in one continuous interface while the coin model stays alive in the background."
-        >
-          <div className="grid grid-cols-1 lg:grid-cols-[1.15fr_1fr] gap-5">
-            <article className="story-card p-7 sm:p-9">
-              <p className="text-[0.66rem] uppercase tracking-[0.18em] text-[hsl(var(--muted-foreground))]">Scroll Narrative</p>
-              <h3 className="mt-4 text-[clamp(1.4rem,3vw,2.5rem)] leading-tight text-[hsl(var(--foreground))]">
-                Apple-style homepage storytelling for your trading product.
-              </h3>
-              <p className="mt-4 text-[0.94rem] text-[hsl(var(--muted-foreground))] leading-relaxed">
-                As users scroll, each full-screen chapter introduces one capability: live crypto news, OKX market stats,
-                smart agent strategy creation, and detailed trade logs with personal performance metrics.
-              </p>
-              <div className="mt-7 flex items-center gap-3 flex-wrap">
-                <Link
-                  to="/create-agent"
-                  className="no-underline px-5 py-2.5 rounded-full bg-[hsl(var(--foreground))] text-[hsl(var(--background))] text-[0.68rem] uppercase tracking-[0.12em]"
-                >
-                  Create Agent
-                </Link>
-                <Link
-                  to="/marketplace"
-                  className="no-underline px-5 py-2.5 rounded-full border border-[hsl(var(--card-border))] text-[hsl(var(--foreground))] text-[0.68rem] uppercase tracking-[0.12em] hover:bg-[hsl(var(--foreground))] hover:text-[hsl(var(--background))] transition-colors"
-                >
-                  Open Marketplace
-                </Link>
-              </div>
-            </article>
-
-            <aside className="story-card p-7 sm:p-9">
-              <p className="text-[0.66rem] uppercase tracking-[0.18em] text-[hsl(var(--muted-foreground))]">Scroll Dynamics</p>
-              <ul className="mt-5 space-y-3 text-[0.9rem] text-[hsl(var(--muted-foreground))]">
-                <li>1. The 3D coin model remains fixed while sections slide over it.</li>
-                <li>2. Coin rotation speed scales with scroll velocity in real time.</li>
-                <li>3. Section transitions trigger extra momentum pulses.</li>
-                <li>4. Data modules auto-refresh with graceful fallback datasets.</li>
-              </ul>
-              <div className="mt-8 rounded-2xl border border-[hsl(var(--card-border))] bg-white/70 p-4">
-                <p className="text-[0.62rem] uppercase tracking-[0.14em] text-[hsl(var(--muted-foreground))]">Current Section</p>
-                <p className="mt-2 text-[1.25rem] text-[hsl(var(--foreground))]" style={{ fontFamily: "var(--font-display)" }}>
-                  {ANCHORS.find((item) => item.id === activeSection)?.label ?? "Overview"}
-                </p>
-              </div>
-            </aside>
-          </div>
-        </StorySection>
+        <section id="features" data-story-section className="min-h-[60vh] pt-[100vh]">
+          <FeatureCards />
+        </section>
 
         <StorySection
           id="news"
